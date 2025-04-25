@@ -2,17 +2,17 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_USER = 'zouboss'
-        BACKEND_IMAGE = "${DOCKER_USER}/projetfilrouge_backend"
-        FRONTEND_IMAGE = "${DOCKER_USER}/projetfilrouge_frontend"
-        MIGRATE_IMAGE = "${DOCKER_USER}/projetfilrouge_migrate"
+        DOCKER_USER = 'aicha037'
+        BACKEND_IMAGE = "${DOCKER_USER}/appprof-frontend"
+        FRONTEND_IMAGE = "${DOCKER_USER}/appprof-backend"
+        MIGRATE_IMAGE = "${DOCKER_USER}/appprof-migrate"
     }
 
     stages {
         stage('Cloner le dépôt') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/zouboss/projet_fil_rouge.git'
+                    url: 'https://github.com/Aissatou022/jenkins_git.git'
             }
         }
 
@@ -47,12 +47,12 @@ pipeline {
 
     post {
         success {
-            mail to: 'alassanebenzecoly@gmail.com',
+            mail to: 'dieye6526@gmail.com',
                  subject: "✅ Déploiement local réussi!",
                  body: "L'application a été déployée localement avec succès."
         }
         failure {
-            mail to: 'alassanebenzecoly@gmail.com',
+            mail to: 'dieye6526@gmail.com',
                  subject: "❌ Échec du pipeline Jenkins",
                  body: "Une erreur s'est produite, merci de vérifier Jenkins."
         }
