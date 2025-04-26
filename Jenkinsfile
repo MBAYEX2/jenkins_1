@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_USER = 'aicha037'
+        DOCKER_USER = 'arafat2'
         BACKEND_IMAGE = "${DOCKER_USER}/appprof-frontend"
         FRONTEND_IMAGE = "${DOCKER_USER}/appprof-backend"
         MIGRATE_IMAGE = "${DOCKER_USER}/appprof-migrate"
@@ -12,15 +12,15 @@ pipeline {
         stage('Cloner le dépôt') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/Aissatou022/jenkins_git.git'
+                    url: 'https://github.com/MBAYEX2/jenkins_1.git'
             }
         }
 
         stage('Build des images') {
     steps {
-        bat "docker build -t %BACKEND_IMAGE%:latest ./Backend/odc"
-        bat "docker build -t %FRONTEND_IMAGE%:latest ./Frontend"
-        bat "docker build -t %MIGRATE_IMAGE%:latest ./Backend/odc"
+        sh 'docker build -t $BACKEND_IMAGE:latest ./Backend/odc'
+        sh 'docker build -t $FRONTEND_IMAGE:latest ./Frontend'
+        sh 'docker build -t $MIGRATE_IMAGE:latest ./Backend/odc'
     }
 }
 
@@ -28,10 +28,10 @@ pipeline {
 
        stage('Push des images sur Docker Hub') {
     steps {
-        withDockerRegistry([credentialsId: 'docker_cred', url: '']) {
-            bat "docker push %BACKEND_IMAGE%:latest"
-            bat "docker push %FRONTEND_IMAGE%:latest"
-            bat "docker push %MIGRATE_IMAGE%:latest"
+        withDockerRegistry([credentialsId: 'accjenkins', url: '']) {
+            sh 'docker push $BACKEND_IMAGE:latest'
+            sh 'docker push $FRONTEND_IMAGE:latest'
+            sh 'docker push $MIGRATE_IMAGE:latest'
         }
     }
 }
@@ -39,7 +39,7 @@ pipeline {
 
         stage('Déploiement Local avec Docker Compose') {
             steps {
-                bat '''
+                sh '''
                     docker-compose down || true
                     docker-compose pull
                     docker-compose up -d --build
@@ -50,14 +50,10 @@ pipeline {
 
     post {
         success {
-            mail to: 'dieye6526@gmail.com',
-                 subject: "✅ Déploiement local réussi!",
-                 body: "L'application a été déployée localement avec succès."
+            echo "✅ CI/CD terminé avec succès"
         }
         failure {
-            mail to: 'dieye6526@gmail.com',
-                 subject: "❌ Échec du pipeline Jenkins",
-                 body: "Une erreur s'est produite, merci de vérifier Jenkins."
+            echo "❌ Échec du pipeline"
         }
     }
 }
