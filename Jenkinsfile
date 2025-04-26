@@ -17,22 +17,25 @@ pipeline {
         }
 
         stage('Build des images') {
-            steps {
-                bat 'docker build -t %BACKEND_IMAGE:latest ./Backend/odc'
-                bat 'docker build -t %FRONTEND_IMAGE:latest ./Frontend'
-                bat 'docker build -t %MIGRATE_IMAGE:latest ./Backend/odc'
-            }
+    steps {
+        bat "docker build -t %BACKEND_IMAGE%:latest ./Backend/odc"
+        bat "docker build -t %FRONTEND_IMAGE%:latest ./Frontend"
+        bat "docker build -t %MIGRATE_IMAGE%:latest ./Backend/odc"
+    }
+}
+
         }
 
-        stage('Push des images sur Docker Hub') {
-            steps {
-                withDockerRegistry([credentialsId: 'docker_cred', url: '']) {
-                    bat 'docker push %BACKEND_IMAGE:latest'
-                    bat 'docker push %FRONTEND_IMAGE:latest'
-                    bat 'docker push %MIGRATE_IMAGE:latest'
-                }
-            }
+       stage('Push des images sur Docker Hub') {
+    steps {
+        withDockerRegistry([credentialsId: 'docker_cred', url: '']) {
+            bat "docker push %BACKEND_IMAGE%:latest"
+            bat "docker push %FRONTEND_IMAGE%:latest"
+            bat "docker push %MIGRATE_IMAGE%:latest"
         }
+    }
+}
+
 
         stage('Déploiement Local avec Docker Compose') {
             steps {
