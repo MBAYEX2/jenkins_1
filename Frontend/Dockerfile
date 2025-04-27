@@ -13,6 +13,10 @@ RUN npm install -g npm@latest
 
 # Revenir sur le registre officiel (il est plus stable pour npm@11)
 RUN npm config set registry https://registry.npmjs.org/
+RUN npm config set fetch-retries 5
+RUN npm config set fetch-retry-mintimeout 20000
+RUN npm config set fetch-retry-maxtimeout 120000
+
 
 # Et maintenant installer
 RUN npm install
