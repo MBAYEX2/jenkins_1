@@ -8,7 +8,11 @@ WORKDIR /app
 COPY package*.json ./
 
 # Installer les dépendances
-RUN npm install
+RUN npm install -g npm@latest
+RUN npm config set registry https://registry.npmmirror.com
+
+RUN npm install --fetch-timeout=60000 --timeout=60000
+
 
 # Copier tout le reste de ton code
 COPY . .
