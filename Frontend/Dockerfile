@@ -1,17 +1,17 @@
-# Use the latest LTS version of Node.js
-FROM node:18-alpine AS build
+# Utiliser l'image officielle Node 20
+FROM node:20
 
-# Set the working directory inside the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Copier seulement les fichiers nécessaires pour npm install
 COPY package*.json ./
 
-# Install dependancies
-RUN npm install 
+# Installer les dépendances
+RUN npm install
 
-# Copy the rest of your application files
+# Copier tout le reste de ton code
 COPY . .
+
 
 RUN npm run build
 
