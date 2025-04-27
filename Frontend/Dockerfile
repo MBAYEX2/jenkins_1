@@ -10,6 +10,8 @@ COPY package*.json ./
 # Installer les dépendances
 # Monter à une version récente de npm
 RUN npm install -g npm@latest
+RUN pip install gunicorn
+
 
 # Revenir sur le registre officiel (il est plus stable pour npm@11)
 RUN npm config set registry https://registry.npmjs.org/
