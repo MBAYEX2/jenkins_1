@@ -8,10 +8,15 @@ WORKDIR /app
 COPY package*.json ./
 
 # Installer les dépendances
+# Monter à une version récente de npm
 RUN npm install -g npm@latest
-RUN npm config set registry https://registry.npmmirror.com
 
-RUN npm install --fetch-timeout=60000 --timeout=60000
+# Revenir sur le registre officiel (il est plus stable pour npm@11)
+RUN npm config set registry https://registry.npmjs.org/
+
+# Et maintenant installer
+RUN npm install
+
 
 
 # Copier tout le reste de ton code
